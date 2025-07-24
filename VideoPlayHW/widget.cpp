@@ -17,11 +17,11 @@ Widget::Widget(QWidget *parent)
 
 
     // 使用QOpenGLWindow绘制
-    // playImage = new PlayImage;
+     playImage = new PlayImage;
 #if USE_WINDOW
     ui->verticalLayout->addWidget(QWidget::createWindowContainer(playImage));   // 这一步加载速度要比OpenGLWidget慢一点
 #else
-    // ui->verticalLayout->addWidget(playImage);
+     ui->gridLayout->addWidget(playImage);
 #endif
 
     // m_readThread = new ReadThread();

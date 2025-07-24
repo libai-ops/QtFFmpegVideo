@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <qmutex.h>
+#include <QLabel>
+#include <QVBoxLayout>
 
 class PlayImage : public QWidget
 {
@@ -21,6 +23,10 @@ protected:
 private:
     QPixmap m_pixmap;
     QMutex m_mutex;
+
+    QLabel* m_pNoSignalText;
+
+
 };
 
 #endif // PLAYIMAGE_H

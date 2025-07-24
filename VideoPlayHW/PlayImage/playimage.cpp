@@ -6,9 +6,17 @@ PlayImage::PlayImage(QWidget *parent) : QWidget(parent)
 {
     // 适用调色板设置背景色
     QPalette palette(this->palette());
-    // palette.setColor(QPalette::Background, Qt::black);   //设置背景黑色
+    palette.setColor(QPalette::Background, Qt::black);   //设置背景黑色
     this->setPalette(palette);
     this->setAutoFillBackground(true);
+    m_pNoSignalText = new QLabel(this);
+    m_pNoSignalText->setText("NO SIGNAL");
+    m_pNoSignalText->setStyleSheet("background-color:black;color:white;font-size:60px;");
+    m_pNoSignalText->show();
+
+    QVBoxLayout* pVLay = new QVBoxLayout(this);
+    pVLay->addWidget(m_pNoSignalText);
+    pVLay->setAlignment(Qt::AlignCenter);
 }
 
 /**

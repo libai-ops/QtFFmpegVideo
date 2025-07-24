@@ -30,7 +30,7 @@ private slots:
 private:
     Ui::Widget *ui;
 
-    // PlayImage* playImage = nullptr;
+     PlayImage* playImage = nullptr;
     // ReadThread* m_readThread = nullptr;
 };
 #endif // WIDGET_H
