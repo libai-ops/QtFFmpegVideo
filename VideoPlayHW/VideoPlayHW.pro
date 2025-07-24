@@ -15,11 +15,13 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 SOURCES += \
     PlayImage/playimage.cpp \
+    PlayImage/readthread.cpp \
     main.cpp \
     widget.cpp
 
 HEADERS += \
     PlayImage/playimage.h \
+    PlayImage/readthread.h \
     widget.h
 
 FORMS += \
