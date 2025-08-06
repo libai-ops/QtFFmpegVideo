@@ -2,7 +2,7 @@
 
 ReadThread::ReadThread()
 {
-
+    m_videoDecode = new VideoDecode();
 }
 
 ReadThread::~ReadThread()

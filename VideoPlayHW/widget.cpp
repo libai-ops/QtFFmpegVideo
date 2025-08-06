@@ -24,20 +24,20 @@ Widget::Widget(QWidget *parent)
      ui->gridLayout->addWidget(playImage);
 #endif
 
-    // m_readThread = new ReadThread();
-    // connect(m_readThread, &ReadThread::repaint, playImage, &PlayImage::repaint, Qt::BlockingQueuedConnection);
-    // connect(m_readThread, &ReadThread::playState, this, &Widget::on_playState);
+     m_readThread = new ReadThread();
+//     connect(m_readThread, &ReadThread::repaint, playImage, &PlayImage::repaint, Qt::BlockingQueuedConnection);
+//     connect(m_readThread, &ReadThread::playState, this, &Widget::on_playState);
 }
 
 Widget::~Widget()
 {
     // 释放视频读取线程
-    // if(m_readThread)
-    // {
-    //     m_readThread->close();
-    //     m_readThread->wait();
-    //     delete m_readThread;
-    // }
+     if(m_readThread)
+     {
+//         m_readThread->close();
+         m_readThread->wait();
+         delete m_readThread;
+     }
     delete ui;
 }
 

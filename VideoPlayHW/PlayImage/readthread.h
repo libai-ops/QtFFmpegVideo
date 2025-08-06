@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QTimer>
 #include <QThread>
+#include "videodecode.h"
 
 class ReadThread:public QThread
 {
@@ -25,6 +26,8 @@ protected:
 
 
 private:
+    VideoDecode* m_videoDecode = nullptr;       // 视频解码类
+
     QString m_strUrl;
     bool    m_bPlay;  //播放控制
     bool    m_bPause; //暂停控制

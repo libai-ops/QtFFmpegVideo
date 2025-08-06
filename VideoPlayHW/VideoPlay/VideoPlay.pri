@@ -11,8 +11,8 @@
 
 # 加载库，ffmpeg n5.1.2版本
 win32{
-LIBS += -L$$PWD\..\externfiles\ffmpeg\win\lib -lavcodec -lavdevice -lavfilter -lavformat -lavutil -lswresample -lswscale
 INCLUDEPATH += $$PWD/../externfiles/ffmpeg/win/include
+LIBS += -L$$PWD\..\externfiles\ffmpeg\win\lib -lavcodec -lavdevice -lavfilter -lavformat -lavutil -lswresample -lswscale
 }
 
 unix:!macx{

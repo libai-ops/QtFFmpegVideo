@@ -2,7 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
-// #include "readthread.h"
+ #include "./PlayImage/readthread.h"
 #include "./PlayImage/playimage.h"
 
 QT_BEGIN_NAMESPACE
@@ -31,6 +31,6 @@ private:
     Ui::Widget *ui;
 
      PlayImage* playImage = nullptr;
-    // ReadThread* m_readThread = nullptr;
+     ReadThread* m_readThread = nullptr;
 };
 #endif // WIDGET_H

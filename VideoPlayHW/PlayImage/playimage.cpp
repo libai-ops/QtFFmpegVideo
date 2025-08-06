@@ -6,7 +6,7 @@ PlayImage::PlayImage(QWidget *parent) : QWidget(parent)
 {
     // 适用调色板设置背景色
     QPalette palette(this->palette());
-    palette.setColor(QPalette::Background, Qt::black);   //设置背景黑色
+    palette.setColor(QPalette::Window, Qt::black);   //设置背景黑色
     this->setPalette(palette);
     this->setAutoFillBackground(true);
     m_pNoSignalText = new QLabel(this);
