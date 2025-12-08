@@ -27,7 +27,7 @@ private slots:
 
     void on_but_pause_clicked();
 
-    // void on_playState(ReadThread::PlayState state);
+    void on_playState(ReadThread::PlayState state);
 
     void on_check_HW_clicked(bool checked);
 

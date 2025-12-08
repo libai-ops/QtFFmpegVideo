@@ -1,0 +1,35 @@
+#include "readthread.h"
+
+ReadThread::ReadThread()
+{
+    m_videoDecode = new VideoDecode();
+    qRegisterMetaType<PlayState>("PlayState");    // 注册自定义枚举类型，否则信号槽无法发送
+}
+
+ReadThread::~ReadThread()
+{
+
+}
+
+/**
+ * @brief      传入播放的视频地址并开启线程
+ * @param url
+ */
+void ReadThread::open(const QString strUrl)
+{
+    if(!this->isRunning() && strUrl.isEmpty())
+    {
+        m_strUrl = strUrl;
+        emit this->start();
+    }
+}
+
+void ReadThread::pause(bool bFlag)
+{
+    m_bPause = bFlag;
+}
+
+void ReadThread::run()
+{
+
+}

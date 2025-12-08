@@ -5,6 +5,7 @@
 #include <qmutex.h>
 #include <QLabel>
 #include <QVBoxLayout>
+#include "readthread.h"
 
 class PlayImage : public QWidget
 {
@@ -14,6 +15,9 @@ public:
 
     void updateImage(const QImage& image);
     void updatePixmap(const QPixmap& pixmap);
+
+public slots:
+    void on_playState(ReadThread::PlayState state);
 
 signals:
 

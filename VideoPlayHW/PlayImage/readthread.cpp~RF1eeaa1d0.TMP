@@ -71,7 +71,7 @@ void ReadThread::run()
     {
         m_play = true;
         m_etime1.start();
-        // m_etime2.start();
+        m_etime2.start();
         emit playState(play);
     }
     else

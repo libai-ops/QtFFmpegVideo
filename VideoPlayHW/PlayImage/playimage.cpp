@@ -40,6 +40,14 @@ void PlayImage::updatePixmap(const QPixmap &pixmap)
     update();
 }
 
+void PlayImage::on_playState(ReadThread::PlayState state)
+{
+    if(state == ReadThread::play)
+        m_pNoSignalText->hide();
+    else
+        m_pNoSignalText->show();
+}
+
 /**
  * @brief        使用Qpainter显示图片
  * @param event

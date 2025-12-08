@@ -1,0 +1,78 @@
+#include "readthread.h"
+
+#include <QEventLoop>
+#include <QTimer>
+#include <QDebug>
+#include <qimage.h>
+#include "PlayImage/playimage.h"
+
+ReadThread::ReadThread()
+{
+    m_videoDecode = new VideoDecode();
+    qRegisterMetaType<PlayState>("PlayState");    // 注册自定义枚举类型，否则信号槽无法发送
+}
+
+ReadThread::~ReadThread()
+{
+    if(m_videoDecode)
+    {
+        delete m_videoDecode;
+    }
+}
+
+/**
+ * @brief      传入播放的视频地址并开启线程
+ * @param url
+ */
+void ReadThread::open(const QString strUrl)
+{
+    if(!this->isRunning() && strUrl.isEmpty())
+    {
+        m_url = strUrl;
+        emit this->start();
+    }
+}
+
+void ReadThread::pause(bool bFlag)
+{
+    m_pause = bFlag;
+}
+
+void ReadThread::close()
+{
+    m_play = false;
+    m_pause = false;
+}
+
+const QString &ReadThread::url()
+{
+     return m_url;
+}
+
+void ReadThread::run()
+{
+
+    bool ret = m_videoDecode->open(m_url);         // 打开网络流时会比较慢，如果放到Ui线程会卡
+    if(ret)
+    {
+        m_play = true;
+        m_etime1.start();
+        m_etime2.start();
+        emit playState(play);
+    }
+    else
+    {
+        qWarning() << "打开失败！";
+    }
+
+    // 循环读取视频图像
+    while (m_play)
+    {
+        // 暂停
+        while (m_pause)
+        {
+            sleepMsec(200);
+        }
+    }
+
+}

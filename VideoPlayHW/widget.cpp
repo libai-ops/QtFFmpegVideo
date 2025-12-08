@@ -4,7 +4,7 @@
 #include <QFileDialog>
 
 extern "C" {        // 用C规则编译指定的代码
-// #include "libavcodec/avcodec.h"
+#include "libavcodec/avcodec.h"
 }
 // Q_DECLARE_METATYPE(AVFrame)  //注册结构体，否则无法通过信号传递AVFrame
 
@@ -25,8 +25,9 @@ Widget::Widget(QWidget *parent)
 #endif
 
      m_readThread = new ReadThread();
-//     connect(m_readThread, &ReadThread::repaint, playImage, &PlayImage::repaint, Qt::BlockingQueuedConnection);
-//     connect(m_readThread, &ReadThread::playState, this, &Widget::on_playState);
+    connect(m_readThread, &ReadThread::updateImage, playImage, &PlayImage::updateImage);
+    connect(m_readThread, &ReadThread::playState, playImage, &PlayImage::on_playState);
+    connect(m_readThread, &ReadThread::playState, this, &Widget::on_playState);
 }
 
 Widget::~Widget()
@@ -68,7 +69,7 @@ void Widget::on_but_open_clicked()
     w->raise();
 #endif
 
-#if 1   //加载过程
+#if 0   //加载过程
     QWidget* loading = new QWidget;
     loading->setFixedSize(1920,1080);
     loading->show();
@@ -86,13 +87,14 @@ void Widget::on_but_open_clicked()
 #endif
 
 
+    qDebug() << ui->but_open->text();
     if(ui->but_open->text() == "开始播放")
     {
-        // m_readThread->open(ui->com_url->currentText());
+        m_readThread->open(ui->com_url->currentText());
     }
     else
     {
-        // m_readThread->close();
+        m_readThread->close();
     }
 }
 
@@ -103,12 +105,12 @@ void Widget::on_but_pause_clicked()
 {
     if(ui->but_pause->text() == "暂停")
     {
-        // m_readThread->pause(true);
+        m_readThread->pause(true);
         ui->but_pause->setText("继续");
     }
     else
     {
-        // m_readThread->pause(false);
+        m_readThread->pause(false);
         ui->but_pause->setText("暂停");
     }
 }
@@ -117,20 +119,20 @@ void Widget::on_but_pause_clicked()
  * @brief        根据视频播放状态切换界面设置
  * @param state
  */
-// void Widget::on_playState(ReadThread::PlayState state)
-// {
-//     if(state == ReadThread::play)
-//     {
-//         this->setWindowTitle(QString("正在播放：%1").arg(m_readThread->url()));
-//         ui->but_open->setText("停止播放");
-//     }
-//     else
-//     {
-//         ui->but_open->setText("开始播放");
-//         ui->but_pause->setText("暂停");
-//         this->setWindowTitle(QString("Qt+ffmpeg视频播放（软/硬解码 + OpenGL显示YUV/NV12）Demo V%1").arg(APP_VERSION));
-//     }
-// }
+void Widget::on_playState(ReadThread::PlayState state)
+{
+    if(state == ReadThread::play)
+    {
+        this->setWindowTitle(QString("正在播放：%1").arg(m_readThread->url()));
+        ui->but_open->setText("停止播放");
+    }
+    else
+    {
+        ui->but_open->setText("开始播放");
+        ui->but_pause->setText("暂停");
+        this->setWindowTitle(QString("Qt+ffmpeg视频播放（软/硬解码 + OpenGL显示YUV/NV12）Demo V%1").arg(APP_VERSION));
+    }
+}
 
 void Widget::on_check_HW_clicked(bool checked)
 {
@@ -138,7 +140,7 @@ void Widget::on_check_HW_clicked(bool checked)
 }
 
 
-//小心心
+//小心心================================================start
 HeartWidget::HeartWidget(QWidget *parent)
     : QWidget(parent)
 {
@@ -309,9 +311,9 @@ void HeartWidget::paintEvent(QPaintEvent * /*event*/)
     p.setFont(QFont("Arial", 10));
     p.drawText(10, height()-10, QString("progress: %1%").arg(int(m_progress*100)));
 }
+//小心心================================================end
 
-
-//加载页面
+//加载页面==============================================start
 #include <QPainter>
 #include <QPaintEvent>
 #include <QtMath>
@@ -408,3 +410,4 @@ void LoadingSpinnerWidget::paintEvent(QPaintEvent * /*event*/)
     // 一行显示，不换行
     p.drawText(textRect, Qt::AlignHCenter | Qt::AlignTop | Qt::TextSingleLine, m_text);
 }
+//加载页面==============================================end
