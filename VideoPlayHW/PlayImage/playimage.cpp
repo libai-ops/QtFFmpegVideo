@@ -11,7 +11,7 @@ PlayImage::PlayImage(QWidget *parent) : QWidget(parent)
     this->setAutoFillBackground(true);
     m_pNoSignalText = new QLabel(this);
     m_pNoSignalText->setText("NO SIGNAL");
-    m_pNoSignalText->setStyleSheet("background-color:black;color:white;font-size:60px;");
+    m_pNoSignalText->setStyleSheet("background-color:transparent;color:white;font-size:60px;");
     m_pNoSignalText->show();
 
     QVBoxLayout* pVLay = new QVBoxLayout(this);
@@ -71,4 +71,18 @@ void PlayImage::paintEvent(QPaintEvent *event)
         painter.drawPixmap(x, y, pixmap);
     }
     QWidget::paintEvent(event);
+}
+
+void PlayImage::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    if(event->button() == Qt::LeftButton)
+    {
+        if(m_bIsMouseDoubleStart)
+            m_bIsMouseDoubleStart = false;
+        else
+            m_bIsMouseDoubleStart = true;
+
+        emit sigMouseReleaseDouble(m_bIsMouseDoubleStart);
+    }
+    QWidget::mouseReleaseEvent(event);
 }

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QThread>
 #include <QElapsedTimer>
-#include <QTimer>
+#include <QTime>
 #include "videodecode.h"
 
 class VideoDecode;
@@ -33,6 +33,10 @@ protected:
 signals:
     void updateImage(const QImage& image);      // 将读取到的视频图像发送出去
     void playState(PlayState state);            // 视频播放状态发送改变时触发
+    void sigMouseReleaseDouble(bool isPlay);    // 双击暂停播放信号
+
+public slots:
+    void slotMouseReleaseDouble(bool bIsplay);
 
 
 private:
@@ -41,7 +45,7 @@ private:
     bool m_play   = false;                      // 播放控制
     bool m_pause  = false;                      // 暂停控制
     QElapsedTimer m_etime1;                     // 控制视频播放速度（更精确，但不支持视频后退）
-    // QTimer        m_etime2;                     // 控制视频播放速度（支持视频后退）
+    // QTime        m_etime2;                     // 控制视频播放速度（支持视频后退）
 };
 
 #endif // READTHREAD_H

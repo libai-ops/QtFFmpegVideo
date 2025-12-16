@@ -48,6 +48,7 @@ private:
     AVFrame*  m_frameHW = nullptr;                // 硬件解码后的视频帧
     int    m_videoIndex   = 0;                    // 视频流索引
     qint64 m_totalTime    = 0;                    // 视频总时长
+    QString m_strTotalTimer = "";
     qint64 m_totalFrames  = 0;                    // 视频总帧数
     qint64 m_obtainFrames = 0;                    // 视频当前获取到的帧数
     qint64 m_pts          = 0;                    // 图像帧的显示时间

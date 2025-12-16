@@ -17,17 +17,19 @@ Widget::Widget(QWidget *parent)
 
 
     // 使用QOpenGLWindow绘制
-     playImage = new PlayImage;
+    m_pPlayImage = new PlayImage;
 #if USE_WINDOW
-    ui->verticalLayout->addWidget(QWidget::createWindowContainer(playImage));   // 这一步加载速度要比OpenGLWidget慢一点
+    ui->verticalLayout->addWidget(QWidget::createWindowContainer(m_pPlayImage));   // 这一步加载速度要比OpenGLWidget慢一点
 #else
-     ui->gridLayout->addWidget(playImage);
+     ui->gridLayout->addWidget(m_pPlayImage);
 #endif
 
-     m_readThread = new ReadThread();
-    connect(m_readThread, &ReadThread::updateImage, playImage, &PlayImage::updateImage);
-    connect(m_readThread, &ReadThread::playState, playImage, &PlayImage::on_playState);
+    m_readThread = new ReadThread();
+    connect(m_readThread, &ReadThread::updateImage, m_pPlayImage, &PlayImage::updateImage);
+    connect(m_readThread, &ReadThread::playState, m_pPlayImage, &PlayImage::on_playState);
     connect(m_readThread, &ReadThread::playState, this, &Widget::on_playState);
+    connect(m_pPlayImage, &PlayImage::sigMouseReleaseDouble , m_readThread, &ReadThread::slotMouseReleaseDouble);
+    connect(m_pPlayImage, &PlayImage::sigMouseReleaseDouble , this , &Widget::slotMouseReleaseDouble);
 }
 
 Widget::~Widget()
@@ -137,6 +139,20 @@ void Widget::on_playState(ReadThread::PlayState state)
 void Widget::on_check_HW_clicked(bool checked)
 {
     // m_readThread->setHWDecoder(checked);
+}
+
+void Widget::slotMouseReleaseDouble(bool bIsPlay)
+{
+    if(bIsPlay)
+    {
+        m_readThread->pause(true);
+        ui->but_pause->setText("继续");
+    }
+    else
+    {
+        m_readThread->pause(false);
+        ui->but_pause->setText("暂停");
+    }
 }
 
 

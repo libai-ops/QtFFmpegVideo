@@ -31,10 +31,12 @@ private slots:
 
     void on_check_HW_clicked(bool checked);
 
+    void slotMouseReleaseDouble(bool bIsPlay);
+
 private:
     Ui::Widget *ui;
 
-     PlayImage* playImage = nullptr;
+     PlayImage*  m_pPlayImage = nullptr;
      ReadThread* m_readThread = nullptr;
 };
 

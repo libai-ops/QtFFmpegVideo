@@ -5,6 +5,7 @@
 #include <qmutex.h>
 #include <QLabel>
 #include <QVBoxLayout>
+#include <QMouseEvent>
 #include "readthread.h"
 
 class PlayImage : public QWidget
@@ -20,15 +21,21 @@ public slots:
     void on_playState(ReadThread::PlayState state);
 
 signals:
+    void sigMouseReleaseDouble(bool bIsPlay);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event);
 
 private:
     QPixmap m_pixmap;
+    QImage  m_image;
     QMutex m_mutex;
 
     QLabel* m_pNoSignalText;
+
+    //双击暂停播放
+    bool m_bIsMouseDoubleStart = true;
 
 
 };

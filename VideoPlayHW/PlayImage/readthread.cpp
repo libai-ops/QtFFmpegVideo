@@ -90,12 +90,12 @@ void ReadThread::run()
 
         QImage image = m_videoDecode->read();  // 读取视频图像
         if(!image.isNull())
-        {
-            // 1倍速播放
-#if 0
-            sleepMsec(int(m_decodeVideo->pts() - m_etime1.elapsed()));         // 不支持后退
+        {            
+#if 1
+            int nMsec =  m_videoDecode->pts() - m_etime1.elapsed();
+            sleepMsec(nMsec);         // 不支持后退
 #else
-            // sleepMsec(int(m_videoDecode->pts() - m_etime1.elapsed()));         // 支持后退（如果能读取到视频，但一直不显示可以把这一行代码注释试试）
+            // sleepMsec(int(m_videoDecode->pts() - m_etime2.elapsed()));         // 支持后退（如果能读取到视频，但一直不显示可以把这一行代码注释试试）
 #endif
             // 由于读取图像和显示图像是在两个线程，而QImage是使用共享内存，信号槽在两个线程传递是默认异步的，所以可能出现读取线程已经将QImage内存清空了，而显示线程还没显示完的情况 \
             // 就会出现程序崩溃问题，解决办法可以使用QImage::copy()或者在updateImage信号连接的地方加上Qt::BlockingQueuedConnection
@@ -118,4 +118,9 @@ void ReadThread::run()
     m_videoDecode->close();
     emit playState(end);
 
+}
+
+void ReadThread::slotMouseReleaseDouble(bool bIsplay)
+{
+    m_pause = bIsplay;
 }

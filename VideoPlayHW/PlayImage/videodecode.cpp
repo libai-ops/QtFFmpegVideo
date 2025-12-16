@@ -174,7 +174,7 @@ bool VideoDecode::open(const QString &url)
         return false;
     }
 
-    ret - avformat_find_stream_info(m_formatContext , nullptr);
+    ret = avformat_find_stream_info(m_formatContext , nullptr);
     if(ret < 0)
     {
         showError(ret);
@@ -183,6 +183,7 @@ bool VideoDecode::open(const QString &url)
     }
 
     m_totalTime = m_formatContext->duration / (AV_TIME_BASE / 1000); //计算视频总时长(毫秒)
+    m_strTotalTimer   = timeToString(m_totalTime);
 #if PRINT_LOG
     qDebug() << "视频总时长"<< m_totalTime;
 #endif
@@ -446,13 +447,22 @@ QImage VideoDecode::read()
                     m_frameTemp->height,          // 行数
                     data,                     // 目标图像数组
                     lines);                   // 包含目标图像每个平面的步幅的数组
-    QImage image(m_buffer, m_frameTemp->width, m_frameTemp->height, QImage::Format_RGBA8888);
+
+    // sws_context 输出改成 BGRA
+    sws_getContext(
+        m_frameTemp->width, m_frameTemp->height, (AVPixelFormat)m_frameTemp->format,
+        m_size.width(), m_size.height(), AV_PIX_FMT_BGRA,
+        SWS_BILINEAR,
+        nullptr, nullptr, nullptr
+        );
+
+    qDebug() << "width: " << m_frameTemp->width << "height " << m_frameTemp->height;
+    QImage image(m_buffer, m_frameTemp->width, m_frameTemp->height , lines[0] ,  QImage::Format_RGBA8888); //Format_RGBA8888
     av_frame_unref(m_frame);
     av_frame_unref(m_frameHW);
 
     QString strCurrentTimer = timeToString(m_pts);
-    QString strTotalTimer   = timeToString();
-    qDebug() << "myCrrentTimer" << strCurrentTimer;
+    qDebug() << "myCrrentTimer" << strCurrentTimer << m_strTotalTimer;
 
     return image;
 }
